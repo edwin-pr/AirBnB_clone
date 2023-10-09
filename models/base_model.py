@@ -1,4 +1,7 @@
+#!/usr/bin/python3
 import uuid
+import sys
+sys.path.append("/root/AirBnB_clone")
 from datetime import datetime
 from models import storage
 
@@ -30,3 +33,4 @@ class BaseModel:
         obj_dict['created_at'] = self.created_at.isoformat()
         obj_dict['updated_at'] = self.updated_at.isoformat()
         return obj_dict
+
