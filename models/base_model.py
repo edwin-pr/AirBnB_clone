@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
-import models  # Import the 'models' package
+import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -21,7 +21,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.now()
-        models.storage.save()  # Use the 'models' package to access the 'storage' instance
+        models.storage.save()
         models.storage.new(self)
 
     def to_dict(self):
