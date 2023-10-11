@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not args:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:  # Add other model class names here
+        elif args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
         else:
             new_instance = BaseModel()
@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not args:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:  # Add other model class names here
+        elif args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -53,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not args:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:  # Add other model class names here
+        elif args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -72,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
         objects = storage.all()
         if not args:
             print([str(obj) for obj in objects.values()])
-        elif args[0] not in ["BaseModel"]:  # Add other model class names here
+        elif args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
         else:
             print([str(obj) for key, obj in objects.items() if key.split('.')[0] == args[0]])
@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
 
         if not args:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel"]:  # Add other model class names here
+        elif args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
