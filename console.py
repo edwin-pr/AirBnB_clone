@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import cmd
+import datetime
 from models import storage
 from models.base_model import BaseModel
 from models.place import Place
@@ -27,45 +28,55 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_show(self, arg):
-        """Print the string representation of an instance based on the class name and id."""
+        """Retrieve an instance based on its ID."""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        instances = storage.all()
+
+        if key in instances:
+            print(instances[key])
         else:
-            class_name = args[0]
-            if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-                if len(args) < 2:
-                    print("** instance id missing **")
-                else:
-                    instance_id = args[1]
-                    key = "{}.{}".format(class_name, instance_id)
-                    if key in storage.all():
-                        print(storage.all()[key])
-                    else:
-                        print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+            print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id (save the change into the JSON file)."""
+        """Destroy an instance based on its ID."""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        instances = storage.all()
+
+        if key in instances:
+            del instances[key]
+            storage.save()
         else:
-            class_name = args[0]
-            if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-                if len(args) < 2:
-                    print("** instance id missing **")
-                else:
-                    instance_id = args[1]
-                    key = "{}.{}".format(class_name, instance_id)
-                    if key in storage.all():
-                        del storage.all()[key]
-                        storage.save()
-                    else:
-                        print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+            print("** no instance found **")
 
     def do_all(self, arg):
         """Prints all string representations of all instances based on the class name."""
@@ -79,17 +90,75 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def do_all(self, arg):
-        """Prints all string representations of all instances based on the class name."""
+    def do_count(self, arg):
+        """Retrieve the number of instances of a class."""
         args = arg.split()
         if len(args) == 0:
-            print([str(value) for value in storage.all().values()])
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+            instances = [value for key, value in storage.all().items() if key.startswith(class_name)]
+            count = len(instances)
+            print(count)
         else:
-            class_name = args[0]
-            if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-                print([str(value) for key, value in storage.all().items() if key.startswith(class_name)])
-            else:
-                print("** class doesn't exist **")
+            print("** class doesn't exist **")
+
+    def do_EOF(self, arg):
+        """Exit the program."""
+        print("")
+        return True
+
+    def do_quit(self, arg):
+        """Exit the program."""
+        return True
+
+    def do_update(self, arg):
+        """Update an instance based on its ID with a dictionary representation."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        obj_id = args[1]
+        key = "{}.{}".format(class_name, obj_id)
+        instances = storage.all()
+
+        if key not in instances:
+            print("** no instance found **")
+            return
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        attr_name = args[2]
+        attr_value = args[3]
+        instance = instances[key]
+
+        # Check if the attribute name exists in the instance
+        if hasattr(instance, attr_name):
+            # Cast the attribute value to the type of the attribute
+            attr_type = type(getattr(instance, attr_name))
+            setattr(instance, attr_name, attr_type(attr_value))
+            instance.updated_at = datetime.datetime.now()
+            storage.save()
+        else:
+            print("** attribute doesn't exist **")
 
     def do_EOF(self, arg):
         """Exit the program."""
