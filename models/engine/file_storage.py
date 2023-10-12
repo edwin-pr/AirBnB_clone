@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 import json
 from models.base_model import BaseModel
+from models.place import Place
+from models.amenity import Amenity
+from models.city import City
+from models.review import Review
+from models.state import State
+from models.user import User
 
 class FileStorage:
     __file_path = "file.json"
@@ -24,12 +30,19 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
+                classes = {
+                    "BaseModel": BaseModel,
+                    "Place": Place,
+                    "Amenity": Amenity,
+                    "City": City,
+                    "Review": Review,
+                    "State": State,
+                    "User": User
+                }
                 for key, value in data.items():
                     class_name, obj_id = key.split('.')
-                    cls = BaseModel.__subclasses__()
-                    for c in cls:
-                        if c.__name__ == class_name:
-                            instance = c(**value)
-                            FileStorage.__objects[key] = instance
+                    if class_name in classes:
+                        instance = classes[class_name](**value)
+                        FileStorage.__objects[key] = instance
         except FileNotFoundError:
             pass
