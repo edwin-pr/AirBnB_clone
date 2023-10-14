@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-""" module of state """
+""" state module """
 from models.base_model import BaseModel
 
-
 class State(BaseModel):
-	""" state class """
+    """
+    State class that represents a state and inherits from BaseModel.
 
-	name = ""
+    Attributes:
+        name (str): The name of the state.
+    """
+    name = ""

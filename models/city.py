@@ -3,6 +3,10 @@
 from models.base_model import BaseModel
 
 class City(BaseModel):
-    """ it has state id and name """
+    """
+    Attributes:
+        state_id (str): The state ID to which the city belongs.
+        name (str): The name of the city.
+    """
     state_id = "" 
     name = ""
