@@ -68,7 +68,7 @@ class TestState(BaseModelTest):
         args = [1, "California"]
         kwargs = {'id': 2, 'name': "Texas"}
         state = self.test_class(*args, **kwargs)
-        self.assertEqual(state.id, 1)  # Args override kwargs
+        self.assertEqual(state.id, 1)
         self.assertEqual(state.name, "California")
 
 if __name__ == '__main__':
