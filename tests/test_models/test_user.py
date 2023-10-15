@@ -130,11 +130,11 @@ class TestUser(BaseModelTest):
             'password': "another_password"
         }
         user = self.test_class(*args, **kwargs)
-        self.assertEqual(user.id, 1)  # Args override kwargs
-        self.assertEqual(user.first_name, "John")  # Args override kwargs
-        self.assertEqual(user.last_name, "Doe")  # Args override kwargs
-        self.assertEqual(user.email, "john@example.com")  # Args override kwargs
-        self.assertEqual(user.password, "password")  # Args override kwargs
+        self.assertEqual(user.id, 1)
+        self.assertEqual(user.first_name, "John")
+        self.assertEqual(user.last_name, "Doe")
+        self.assertEqual(user.email, "john@example.com")
+        self.assertEqual(user.password, "password")
 
 
 if __name__ == '__main__':
