@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Console HBNB CMD Class"""
 import cmd
 import datetime
 from models import storage
@@ -129,10 +130,6 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_quit(self, arg):
-        """Exit the program."""
-        return True
-
     def do_update(self, arg):
         """Update an instance based on its ID with a
         dictionary representation."""
@@ -186,7 +183,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_quit(self, arg):
-        """Exit the program."""
+        """Quit command to exit the program"""
         return True
 
 
