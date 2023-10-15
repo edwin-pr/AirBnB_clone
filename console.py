@@ -80,20 +80,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
-    def do_all(self, arg):
-        """Prints all string representations of all instances based on the class name."""
-        args = arg.split()
-        if len(args) == 0:
-            print([str(value) for value in storage.all().values()])
-        else:
-            class_name = args[0]
-            if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-                print([str(value) for key, value in storage.all().items() if key.startswith(class_name)])
-            else:
-                print("** class doesn't exist **")
-
     def do_count(self, arg):
-        """Retrieve the number of instances of a class."""
+        """Count instances of a class."""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -101,11 +89,40 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args[0]
         if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-            instances = [value for key, value in storage.all().items() if key.startswith(class_name)]
-            count = len(instances)
+            instances = storage.all()
+            count = sum(1 for key in instances if key.startswith(class_name + '.'))
             print(count)
         else:
             print("** class doesn't exist **")
+
+    def do_all(self, args):
+        """Prints all string representations of all instances based on the class name."""
+        arguments = args.split()
+        if not arguments:
+            print("** class name missing **")
+            return
+
+        class_name = arguments[0]
+        if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+            if len(arguments) == 2 and arguments[1] == "count()":
+
+                self.do_count(class_name)
+            else:
+                all_instances = storage.all().values()
+                instances_of_class = [str(instance) for instance in all_instances if type(instance).__name__ == class_name]
+                if instances_of_class:
+                    print(instances_of_class)
+                else:
+                    print("[]")
+        else:
+            print("** class doesn't exist **")
+
+    def do_User(self, arg):
+        """List every instance or count instances of User class."""
+        if arg == "count()":
+            self.do_count("User")
+        else:
+            self.do_all("User " + arg)
 
     def do_EOF(self, arg):
         """Exit the program."""
@@ -153,9 +170,9 @@ class HBNBCommand(cmd.Cmd):
         attr_value = args[3]
         instance = instances[key]
 
-        # Check if the attribute name exists in the instance
+        """Check if the attribute name exists in the instance"""
         if hasattr(instance, attr_name):
-            # Cast the attribute value to the type of the attribute
+            """Cast the attribute value to the type of the attribute"""
             attr_type = type(getattr(instance, attr_name))
             setattr(instance, attr_name, attr_type(attr_value))
             instance.updated_at = datetime.datetime.now()
