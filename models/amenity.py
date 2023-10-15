@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """ Amenity module """
 from models.base_model import BaseModel
 

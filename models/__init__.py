@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """magic method"""
 from models.state import State
 from models.city import City

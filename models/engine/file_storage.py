@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """This module aids in serialization and deserialization of objects
 It also creates, saves, reloads the given objects.
 """

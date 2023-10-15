@@ -30,7 +30,7 @@ class TestAmenity(BaseModelTest):
         self.assertIn("'updated_at':", str_rep)
 
     def test_to_dict(self):
-        """Test the to_dict method of Amenity"""
+        """Test the to_dict method of Amenity<--"""
         new_amenity = self.test_class()
         amenity_dict = new_amenity.to_dict()
         self.assertEqual(type(amenity_dict), dict)
@@ -39,7 +39,7 @@ class TestAmenity(BaseModelTest):
         self.assertEqual(type(amenity_dict['updated_at']), str)
 
     def test_from_dict(self):
-        """Test creating an Amenity instance from a dictionary"""
+        """Test for creating an Amenity instance from a dictionary"""
         new_amenity = self.test_class()
         amenity_dict = new_amenity.to_dict()
         amenity_copy = self.test_class(**amenity_dict)
