@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""TestFileStorage class to test the FileStorage class methods."""
 import unittest
 import os
 from models.base_model import BaseModel
