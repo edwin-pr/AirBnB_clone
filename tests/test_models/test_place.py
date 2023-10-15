@@ -107,5 +107,6 @@ class TestPlace(BaseModelTest):
         self.assertEqual(place.user_id, "user456")
         self.assertEqual(place.name, "Beautiful Place")
 
+
 if __name__ == '__main__':
     unittest.main()

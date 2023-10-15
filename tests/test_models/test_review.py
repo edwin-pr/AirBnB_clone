@@ -75,5 +75,6 @@ class TestReview(BaseModelTest):
         self.assertEqual(review.user_id, "456")
         self.assertEqual(review.text, "Great place")
 
+
 if __name__ == '__main__':
     unittest.main()

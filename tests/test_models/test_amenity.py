@@ -46,5 +46,6 @@ class TestAmenity(BaseModelTest):
         self.assertTrue(amenity_copy is not new_amenity)
         self.assertEqual(amenity_copy.to_dict(), amenity_dict)
 
+
 if __name__ == '__main__':
     unittest.main()

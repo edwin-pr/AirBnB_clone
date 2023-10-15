@@ -10,11 +10,13 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel, save it (to the JSON file), and print the id."""
+        """Create a new instance of BaseModel, save it (to the JSON file),
+        and print the id."""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -115,7 +117,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_update(self, arg):
-        """Update an instance based on its ID with a dictionary representation."""
+        """Update an instance based on its ID with a
+        dictionary representation."""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -169,6 +172,6 @@ class HBNBCommand(cmd.Cmd):
         """Exit the program."""
         return True
 
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-    

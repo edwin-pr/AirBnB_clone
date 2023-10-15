@@ -94,7 +94,7 @@ class TestUser(BaseModelTest):
         """Test that 'password' attribute has the initial value."""
         new_user = self.test_class()
         self.assertEqual(new_user.password, "")
-        
+
     def test_args_kwargs(self):
         """Test User class instantiation with args and kwargs."""
         args = [1, "John", "Doe", "john@example.com", "password"]

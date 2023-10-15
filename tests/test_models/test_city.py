@@ -69,5 +69,6 @@ class TestCity(BaseModelTest):
         self.assertEqual(city.state_id, "state123")
         self.assertEqual(city.name, "Awesome City")
 
+
 if __name__ == '__main__':
     unittest.main()

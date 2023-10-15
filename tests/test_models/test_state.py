@@ -50,7 +50,7 @@ class TestState(BaseModelTest):
         """Test the 'name' attribute of the State class"""
         new_state = self.test_class()
         self.assertEqual(type(new_state.name), str)
-        
+
     def test_args_kwargs(self):
         """Test State class instantiation with args and kwargs."""
         args = [1, "California"]
@@ -70,6 +70,7 @@ class TestState(BaseModelTest):
         state = self.test_class(*args, **kwargs)
         self.assertEqual(state.id, 1)
         self.assertEqual(state.name, "California")
+
 
 if __name__ == '__main__':
     unittest.main()

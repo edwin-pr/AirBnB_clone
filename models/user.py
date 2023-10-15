@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """This is a representation of a user and inherits from BaseModel."""
-
 from models.base_model import BaseModel
+
 
 class User(BaseModel):
     """

@@ -6,6 +6,7 @@ import datetime
 import json
 import os
 
+
 class TestBaseModel(unittest.TestCase):
     """Test the BaseModel class"""
 
@@ -127,6 +128,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(new.id, 1)
         self.assertEqual(new.name, "Hello")
         self.assertEqual(new.value, 3.14)
+
 
 if __name__ == '__main__':
     unittest.main()

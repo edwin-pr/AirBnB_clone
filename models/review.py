@@ -2,6 +2,7 @@
 """ review module """
 from models.base_model import BaseModel
 
+
 class Review(BaseModel):
     """
     Review class that represents a review and inherits from BaseModel.

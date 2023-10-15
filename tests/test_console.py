@@ -5,6 +5,7 @@ from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
 
+
 class TestConsole(unittest.TestCase):
     """Test the HBNBCommand class"""
 
@@ -142,6 +143,7 @@ class TestConsole(unittest.TestCase):
             HBNBCommand().onecmd("update BaseModel my_id invalid_attribute 'value'")
             output = mock_stdout.getvalue()
             self.assertIn("** no instance found **", output)
+
 
 if __name__ == '__main__':
     unittest.main()

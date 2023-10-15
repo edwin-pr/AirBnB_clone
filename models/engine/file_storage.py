@@ -14,7 +14,8 @@ from models.user import User
 
 class FileStorage:
     """
-    FileStorage class to manage JSON serialization and deserialization of objects.
+    FileStorage class to manage JSON serialization and
+    deserialization of objects.
 
     Attributes:
         __file_path (str): The path to the JSON file.

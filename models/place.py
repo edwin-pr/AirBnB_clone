@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Place module """
-
 from models.base_model import BaseModel
+
 
 class Place(BaseModel):
     """
@@ -14,7 +14,7 @@ class Place(BaseModel):
         description (str): This is the place's clear description.
         number_rooms (int): The quantity of rooms avaible in the place.
         number_bathrooms (int): The number of bathrooms in the place.
-        max_guest (int): The highest number of guests the place can accommodate.
+        max_guest (int): The highest number of guests th place can accommodate
         price_by_night (int): The price per night for accomadation.
         latitude (float): The place's latitude coordinate.
         longitude (float): The places' longitude coordinate.

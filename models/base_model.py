@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """
     The BaseModel class represents a base model for other data objects.
@@ -10,7 +11,8 @@ class BaseModel:
     Attributes:
         id (str): A unique identifier for the object.
         created_at (datetime): The date and time when the object was created.
-        updated_at (datetime): The date and time when the object was last updated.
+        updated_at (datetime): The date and time when the
+        object was last updated.
     """
 
     def __init__(self, *args, **kwargs):
@@ -21,8 +23,10 @@ class BaseModel:
             *args: Variable-length argument list.
             **kwargs: Arbitrary keyword arguments.
 
-        If kwargs is provided, it updates object attributes based on the provided key-value pairs.
-        Otherwise, it initializes the object with a new ID and current timestamps.
+        If kwargs is provided, it updates object attributes based on
+        the provided key-value pairs.
+        Otherwise, it initializes the object with a
+        new ID and current timestamps.
         """
         if kwargs:
             for key, value in kwargs.items():
@@ -46,7 +50,8 @@ class BaseModel:
 
     def save(self):
         """
-        Updates the 'updated_at' attribute, saves the object, and stores it in the storage system.
+        Updates the 'updated_at' attribute, saves the object, and stores it
+        in the storage system.
         """
         self.updated_at = datetime.now()
         models.storage.save()
