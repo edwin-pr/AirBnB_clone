@@ -11,7 +11,7 @@ class TestBaseModel(unittest.TestCase):
     """Test the BaseModel class"""
 
     def __init__(self, *args, **kwargs):
-        """Initializes test variables"""
+        """Initializes <--test variables"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
@@ -28,7 +28,7 @@ class TestBaseModel(unittest.TestCase):
             pass
 
     def test_default(self):
-        """Test default instantiation"""
+        """Test default <--instantiation"""
         i = self.value()
         self.assertEqual(type(i), self.value)
 
@@ -40,7 +40,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """Test instantiation with invalid int kwargs"""
+        """Test instantiation with invalid<-- int kwargs"""
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -74,7 +74,7 @@ class TestBaseModel(unittest.TestCase):
             new = self.value(**n)
 
     def test_kwargs_one(self):
-        """Test instantiation with single-key kwargs"""
+        """Test instantiation with single-key<-- kwargs"""
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
             new = self.value(**n)
@@ -99,35 +99,35 @@ class TestBaseModel(unittest.TestCase):
 
     def test_args(self):
         """Test instantiation with args"""
-        args = [1, "Hello", 3.14]
+        args = [1, "Hello", 43.14]
         new = self.value(*args)
         self.assertEqual(new.id, 1)
         self.assertEqual(new.name, "Hello")
-        self.assertEqual(new.value, 3.14)
+        self.assertEqual(new.value, 43.14)
 
     def test_args_override(self):
         """Test args overriding default values"""
-        args = [1, "Hello", 3.14]
+        args = [1, "Hello", 53.14]
         new = self.value(*args, id=2, name="World", value=2.71)
-        self.assertEqual(new.id, 1)  # Args override kwargs
+        self.assertEqual(new.id, 1)
         self.assertEqual(new.name, "Hello")
-        self.assertEqual(new.value, 3.14)
+        self.assertEqual(new.value, 53.14)
 
     def test_kwargs(self):
-        """Test instantiation with kwargs"""
-        kwargs = {'id': 1, 'name': "Hello", 'value': 3.14}
+        """Test instantiation with kwargs<--"""
+        kwargs = {'id': 1, 'name': "Hello", 'value': 43.14}
         new = self.value(**kwargs)
         self.assertEqual(new.id, 1)
         self.assertEqual(new.name, "Hello")
-        self.assertEqual(new.value, 3.14)
+        self.assertEqual(new.value, 43.14)
 
     def test_kwargs_override(self):
-        """Test kwargs overriding default values"""
-        kwargs = {'id': 1, 'name': "Hello", 'value': 3.14}
+        """Test kwargs overriding<-- default values"""
+        kwargs = {'id': 3, 'name': "Hello", 'value': 33.14}
         new = self.value(id=2, name="World", value=2.71, **kwargs)
-        self.assertEqual(new.id, 1)
+        self.assertEqual(new.id, 3)
         self.assertEqual(new.name, "Hello")
-        self.assertEqual(new.value, 3.14)
+        self.assertEqual(new.value, 33.14)
 
 
 if __name__ == '__main__':
