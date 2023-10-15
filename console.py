@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Console HBNB CMD Class"""
+import re
 import cmd
 import datetime
 from models import storage
@@ -14,6 +15,10 @@ from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
+
+    def validate_email(self, email):
+        pattern = r'^\S+@\S+\.\S+$'
+        return bool(re.match(pattern, email))
 
     def do_create(self, arg):
         """Create a new instance of BaseModel, save it (to the JSON file),
@@ -83,19 +88,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """Count instances of a class."""
-        args = arg.split()
-        if len(args) == 0:
-            print("** class name missing **")
-            return
-
-        class_name = args[0]
-        if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-            instances = storage.all()
-            count = sum(1 for key in instances if key.startswith(class_name + '.'))
-            print(count)
+        if arg:
+            class_name = arg.split('.')[0]
+            if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+                instances = storage.all()
+                count = sum(1 for key in instances if key.startswith(class_name + '.'))
+                print(count)
+            else:
+                print("** class doesn't exist **")
         else:
-            print("** class doesn't exist **")
+            print("** class name missing **")
 
+    
     def do_all(self, args):
         """Prints all string representations of all instances based on the class name."""
         arguments = args.split()
@@ -104,13 +108,14 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = arguments[0]
-        if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
-            if len(arguments) == 2 and arguments[1] == "count()":
+        valid_class_names = ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User")
 
+        if class_name in valid_class_names:
+            if len(arguments) == 2 and arguments[1] == "count()":
                 self.do_count(class_name)
             else:
                 all_instances = storage.all().values()
-                instances_of_class = [str(instance) for instance in all_instances if type(instance).__name__ == class_name]
+                instances_of_class = [str(instance) for instance in all_instances if isinstance(instance, globals()[class_name])]
                 if instances_of_class:
                     print(instances_of_class)
                 else:
@@ -167,9 +172,7 @@ class HBNBCommand(cmd.Cmd):
         attr_value = args[3]
         instance = instances[key]
 
-        """Check if the attribute name exists in the instance"""
         if hasattr(instance, attr_name):
-            """Cast the attribute value to the type of the attribute"""
             attr_type = type(getattr(instance, attr_name))
             setattr(instance, attr_name, attr_type(attr_value))
             instance.updated_at = datetime.datetime.now()
