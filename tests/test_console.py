@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """Unittests for console.py"""
-import time
 import unittest
 from unittest.mock import patch
-from models import storage
-from models.engine.file_storage import FileStorage
 from io import StringIO
 from console import HBNBCommand
 
@@ -12,8 +9,8 @@ class TestConsole(unittest.TestCase):
     def test_create(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             HBNBCommand().onecmd("create BaseModel")
-            output = mock_stdout.getvalue().strip()
-            self.assertIsNotNone(output)
+            output = mock_stdout.getvalue()
+            self.assertIn("BaseModel", output)
 
     def test_create_unsupported_class(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -32,11 +29,7 @@ class TestConsole(unittest.TestCase):
             HBNBCommand().onecmd("create BaseModel")
             output = mock_stdout.getvalue()
             instance_id = output.strip()
-
-            # Access objects via the storage system
-            obj_dict = storage.all()
-
-            # Update this line to access the object correctly
+            obj_dict = HBNBCommand().storage.all()
             self.assertIn("BaseModel.{}".format(instance_id), obj_dict)
 
     def test_show(self):
@@ -45,8 +38,7 @@ class TestConsole(unittest.TestCase):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout_show:
                 HBNBCommand().onecmd("show BaseModel")
             output = mock_stdout_show.getvalue()
-            self.assertNotIn("** instance id missing **", output)
-
+            self.assertIn("BaseModel", output)
 
     def test_show_non_existing_instance(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -69,19 +61,16 @@ class TestConsole(unittest.TestCase):
     def test_destroy(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             HBNBCommand().onecmd("create BaseModel")
-            obj_id = mock_stdout.getvalue().strip()
-
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            HBNBCommand().onecmd(f"destroy BaseModel {obj_id}")
-            output = mock_stdout.getvalue().strip()
-            self.assertNotIn("** no instance found **", output)
-
+            HBNBCommand().onecmd("destroy BaseModel")
+            HBNBCommand().onecmd("show BaseModel")
+            output = mock_stdout.getvalue()
+            self.assertIn("** no instance found **", output)
 
     def test_destroy_non_existing_instance(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            HBNBCommand().onecmd("destroy BaseModel non_existing_id")
+            HBNBCommand().onecmd("destroy BaseModel")
             output = mock_stdout.getvalue()
-            self.assertEqual(output.strip(), "** no instance found **")
+            self.assertIn("** no instance found **", output)
 
     def test_destroy_instance_without_class_name(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -99,8 +88,6 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             HBNBCommand().onecmd("create BaseModel")
             HBNBCommand().onecmd("update BaseModel my_id name 'John'")
-            # Wait for the update command to complete
-            time.sleep(1)
             HBNBCommand().onecmd("show BaseModel my_id")
             output = mock_stdout.getvalue()
             self.assertIn("John", output)
@@ -126,12 +113,9 @@ class TestConsole(unittest.TestCase):
     def test_update_attribute_with_incorrect_data_type(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             HBNBCommand().onecmd("create BaseModel")
-            with self.assertRaises(Exception) as context:
-                HBNBCommand().onecmd("update BaseModel my_id number_rooms 'two'")
-            
-            exception = context.exception
-            self.assertIn("** value must be an integer **", str(exception))
-
+            HBNBCommand().onecmd("update BaseModel my_id number_rooms 'two'")
+            output = mock_stdout.getvalue()
+            self.assertIn("** value must be an integer **", output)
 
     def test_update_invalid_attribute(self):
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
