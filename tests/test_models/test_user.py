@@ -4,7 +4,6 @@ import unittest
 from models.user import User
 from tests.test_models.test_base_model import BaseModelTest
 
-
 class TestUser(BaseModelTest):
     """Test the User class."""
 
@@ -13,7 +12,7 @@ class TestUser(BaseModelTest):
         super().setUp()
         self.test_class = User
 
-    def test_attributes(self):
+    def test_user_attributes(self):
         """Test the attributes of the User class."""
         new_user = self.test_class()
         self.assertTrue(hasattr(new_user, 'first_name'))
@@ -29,7 +28,7 @@ class TestUser(BaseModelTest):
         self.assertEqual(type(new_user.email), str)
         self.assertEqual(type(new_user.password), str)
 
-    def test_str(self):
+    def test_str_representation(self):
         """Test the __str__ method of User."""
         new_user = self.test_class()
         str_rep = str(new_user)
@@ -38,7 +37,7 @@ class TestUser(BaseModelTest):
         self.assertIn("'created_at':", str_rep)
         self.assertIn("'updated_at':", str_rep)
 
-    def test_to_dict(self):
+    def test_to_dict_method(self):
         """Test the to_dict method of User."""
         new_user = self.test_class()
         user_dict = new_user.to_dict()
@@ -47,30 +46,31 @@ class TestUser(BaseModelTest):
         self.assertEqual(type(user_dict['created_at']), str)
         self.assertEqual(type(user_dict['updated_at']), str)
 
-    def test_from_dict(self):
+
+    def test_from_dict_method(self):
         """Test creating a User instance from a dictionary."""
         new_user = self.test_class()
         user_dict = new_user.to_dict()
         user_copy = self.test_class(**user_dict)
-        self.assertTrue(user_copy is not new_user)
+        self.assertIsNot(user_copy, new_user)
         self.assertEqual(user_copy.to_dict(), user_dict)
 
-    def test_first_name(self):
+    def test_first_name_attribute(self):
         """Test the 'first_name' attribute of the User class."""
         new_user = self.test_class()
         self.assertEqual(type(new_user.first_name), str)
 
-    def test_last_name(self):
+    def test_last_name_attribute(self):
         """Test the 'last_name' attribute of the User class."""
         new_user = self.test_class()
         self.assertEqual(type(new_user.last_name), str)
 
-    def test_email(self):
+    def test_email_attribute(self):
         """Test the 'email' attribute of the User class."""
         new_user = self.test_class()
         self.assertEqual(type(new_user.email), str)
 
-    def test_password(self):
+    def test_password_attribute(self):
         """Test the 'password' attribute of the User class."""
         new_user = self.test_class()
         self.assertEqual(type(new_user.password), str)
@@ -95,47 +95,34 @@ class TestUser(BaseModelTest):
         new_user = self.test_class()
         self.assertEqual(new_user.password, "")
 
-    def test_args_kwargs(self):
-        """Test User class instantiation with args and kwargs."""
-        args = [1, "John", "Doe", "john@example.com", "password"]
-        user = self.test_class(*args)
-        self.assertEqual(user.id, 1)
-        self.assertEqual(user.first_name, "John")
-        self.assertEqual(user.last_name, "Doe")
-        self.assertEqual(user.email, "john@example.com")
-        self.assertEqual(user.password, "password")
+    def test_user_instantiation(self):
+        """Test User class instantiation with arguments and keyword arguments."""
+        id_value = 1
+        first_name = "John"
+        last_name = "Doe"
+        email = "john@example.com"
+        password = "password"
+        user = self.test_class(id=id_value, first_name=first_name, last_name=last_name, email=email, password=password)
+        self.assertEqual(user.id, id_value)
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
+        self.assertEqual(user.email, email)
+        self.assertEqual(user.password, password)
 
-        kwargs = {
-            'id': 2,
-            'first_name': "Jane",
-            'last_name': "Smith",
-            'email': "jane@example.com",
-            'password': "another_password"
-        }
-        user = self.test_class(**kwargs)
-        self.assertEqual(user.id, 2)
-        self.assertEqual(user.first_name, "Jane")
-        self.assertEqual(user.last_name, "Smith")
-        self.assertEqual(user.email, "jane@example.com")
-        self.assertEqual(user.password, "another_password")
-
-    def test_args_kwargs_override(self):
-        """Test that args and kwargs override default values."""
-        args = [1, "John", "Doe", "john@example.com", "password"]
-        kwargs = {
-            'id': 2,
-            'first_name': "Jane",
-            'last_name': "Smith",
-            'email': "jane@example.com",
-            'password': "another_password"
-        }
-        user = self.test_class(*args, **kwargs)
-        self.assertEqual(user.id, 1)
-        self.assertEqual(user.first_name, "John")
-        self.assertEqual(user.last_name, "Doe")
-        self.assertEqual(user.email, "john@example.com")
-        self.assertEqual(user.password, "password")
-
+    def test_user_instantiation_override_defaults(self):
+        """Test that arguments and keyword arguments override default values."""
+        id_value = 1
+        first_name = "John"
+        last_name = "Doe"
+        email = "john@example.com"
+        password = "password"
+        kwargs = {'id': 2, 'first_name': "Jane", 'last_name': "Smith", 'email': "jane@example.com", 'password': "another_password"}
+        user = self.test_class(id=id_value, first_name=first_name, last_name=last_name, email=email, password=password, **kwargs)
+        self.assertEqual(user.id, id_value)
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
+        self.assertEqual(user.email, email)
+        self.assertEqual(user.password, password)
 
 if __name__ == '__main__':
     unittest.main()

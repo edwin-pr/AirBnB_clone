@@ -173,12 +173,18 @@ class HBNBCommand(cmd.Cmd):
         instance = instances[key]
 
         if hasattr(instance, attr_name):
-            attr_type = type(getattr(instance, attr_name))
-            setattr(instance, attr_name, attr_type(attr_value))
-            instance.updated_at = datetime.datetime.now()
-            storage.save()
+            try:
+                # Attempt to cast the attribute value to the correct type
+                attr_type = type(getattr(instance, attr_name))
+                setattr(instance, attr_name, attr_type(attr_value))
+                instance.updated_at = datetime.datetime.now()
+                storage.save()
+            except ValueError:
+                # Raise an exception if the type conversion fails
+                raise Exception("** value must be an integer **")
         else:
             print("** attribute doesn't exist **")
+
 
     def do_EOF(self, arg):
         """Exit the program."""

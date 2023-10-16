@@ -2,6 +2,7 @@
 """Base-Model class"""
 import uuid
 from datetime import datetime
+import time
 import models
 
 
@@ -55,6 +56,7 @@ class BaseModel:
         in the storage system.
         """
         self.updated_at = datetime.now()
+        time.sleep(0.001)
         models.storage.save()
         models.storage.new(self)
 

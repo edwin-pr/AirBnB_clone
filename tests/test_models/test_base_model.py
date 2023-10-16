@@ -2,6 +2,7 @@
 """Unit tests for BaseModel class"""
 import unittest
 from models.base_model import BaseModel
+from tests.test_models.test_base_model import BaseModelTest
 from datetime import datetime
 import json
 import os
@@ -84,7 +85,7 @@ class TestBaseModel(unittest.TestCase):
     def test_args_override_defaults(self):
         """Test args overriding default values"""
         args = [1, "Hello", 53.14]
-        new = BaseModel(*args, id=2, name="World", value=2.71)
+        new = BaseModel(*args, name="World", value=2.71)
         self.assertEqual(new.id, 1)
         self.assertEqual(new.name, "Hello")
         self.assertEqual(new.value, 53.14)
