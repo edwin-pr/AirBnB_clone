@@ -4,17 +4,16 @@ import unittest
 from models.place import Place
 from tests.test_models.test_base_model import BaseModelTest
 
-
 class TestPlace(BaseModelTest):
-    """Test the Place class"""
+    """Test the Place class."""
 
     def setUp(self):
         """Set up for the test"""
         super().setUp()
         self.test_class = Place
 
-    def test_attributes(self):
-        """Test the attributes of the Place class"""
+    def test_place_attributes(self):
+        """Test the attributes of the Place class."""
         new_place = self.test_class()
         self.assertTrue(hasattr(new_place, 'city_id'))
         self.assertTrue(hasattr(new_place, 'user_id'))
@@ -50,8 +49,8 @@ class TestPlace(BaseModelTest):
         self.assertEqual(type(new_place.longitude), float)
         self.assertEqual(type(new_place.amenity_ids), list)
 
-    def test_str(self):
-        """Test the __str__ method of Place"""
+    def test_str_representation(self):
+        """Test the __str__ method of Place."""
         new_place = self.test_class()
         str_rep = str(new_place)
         self.assertIn("[Place]", str_rep)
@@ -59,8 +58,8 @@ class TestPlace(BaseModelTest):
         self.assertIn("'created_at':", str_rep)
         self.assertIn("'updated_at':", str_rep)
 
-    def test_to_dict(self):
-        """Test the to_dict method of Place"""
+    def test_to_dict_method(self):
+        """Test the to_dict method of Place."""
         new_place = self.test_class()
         place_dict = new_place.to_dict()
         self.assertEqual(type(place_dict), dict)
@@ -68,45 +67,38 @@ class TestPlace(BaseModelTest):
         self.assertEqual(type(place_dict['created_at']), str)
         self.assertEqual(type(place_dict['updated_at']), str)
 
-    def test_from_dict(self):
-        """Test creating a Place instance from a dictionary"""
+    def test_from_dict_method(self):
+        """Test creating a Place instance from a dictionary."""
         new_place = self.test_class()
         place_dict = new_place.to_dict()
         place_copy = self.test_class(**place_dict)
-        self.assertTrue(place_copy is not new_place)
+        self.assertIsNot(place_copy, new_place)
         self.assertEqual(place_copy.to_dict(), place_dict)
 
-    def test_args_kwargs(self):
-        """Test Place class instantiation with args and kwargs."""
-        args = ["city123", "user456", "Beautiful Place"]
-        place = self.test_class(*args)
-        self.assertEqual(place.city_id, "city123")
-        self.assertEqual(place.user_id, "user456")
-        self.assertEqual(place.name, "Beautiful Place")
+    def test_place_instantiation(self):
+        """Test Place class instantiation with arguments and keyword arguments."""
+        city_id = "city123"
+        user_id = "user456"
+        name = "Beautiful Place"
+        place = self.test_class(city_id=city_id, user_id=user_id, name=name)
+        self.assertEqual(place.city_id, city_id)
+        self.assertEqual(place.user_id, user_id)
+        self.assertEqual(place.name, name)
 
+    def test_place_instantiation_override_defaults(self):
+        """Test that arguments and keyword arguments override default values."""
+        city_id = "city123"
+        user_id = "user456"
+        name = "Beautiful Place"
         kwargs = {
             'city_id': "city789",
             'user_id': "user101",
             'name': "Awesome Place"
         }
-        place = self.test_class(**kwargs)
-        self.assertEqual(place.city_id, "city789")
-        self.assertEqual(place.user_id, "user101")
-        self.assertEqual(place.name, "Awesome Place")
-
-    def test_args_kwargs_override(self):
-        """Test that args and kwargs override default values."""
-        args = ["city123", "user456", "Beautiful Place"]
-        kwargs = {
-            'city_id': "city789",
-            'user_id': "user101",
-            'name': "Awesome Place"
-        }
-        place = self.test_class(*args, **kwargs)
-        self.assertEqual(place.city_id, "city123")
-        self.assertEqual(place.user_id, "user456")
-        self.assertEqual(place.name, "Beautiful Place")
-
+        place = self.test_class(city_id, user_id, name, **kwargs)
+        self.assertEqual(place.city_id, city_id)
+        self.assertEqual(place.user_id, user_id)
+        self.assertEqual(place.name, name)
 
 if __name__ == '__main__':
     unittest.main()
