@@ -14,15 +14,43 @@ from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
+    """
+    HBNBCommand class that implements a command-line console for the HBNB project.
+    """
     prompt = "(hbnb) "
+    __classes = [
+        "Amenity",
+        "BaseModel",
+        "City",
+        "Place",
+        "Review",
+        "State",
+        "User"
+    ]
 
     def validate_email(self, email):
+        """
+        Validate if the given string is a valid email address.
+
+        Args:
+            email (str): The email address to validate.
+
+        Returns:
+            bool: True if the email is valid, False otherwise.
+        """
         pattern = r'^\S+@\S+\.\S+$'
         return bool(re.match(pattern, email))
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel, save it (to the JSON file),
-        and print the id."""
+        """
+        Create a new instance of a class, save it to the JSON file, and print the ID.
+
+        Args:
+            arg (str): The class name.
+
+        Usage:
+            create <class_name>
+        """
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -36,7 +64,15 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_show(self, arg):
-        """Retrieve an instance based on its ID."""
+        """
+        Retrieve an instance based on its ID.
+
+        Args:
+            arg (str): The class name and ID.
+
+        Usage:
+            show <class_name> <ID>
+        """
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -61,7 +97,15 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Destroy an instance based on its ID."""
+        """
+        Destroy an instance based on its ID.
+
+        Args:
+            arg (str): The class name and ID.
+
+        Usage:
+            destroy <class_name> <ID>
+        """
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -87,7 +131,15 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_count(self, arg):
-        """Count instances of a class."""
+        """
+        Count instances of a class.
+
+        Args:
+            arg (str): The class name.
+
+        Usage:
+            count <class_name>
+        """
         if arg:
             class_name = arg.split('.')[0]
             if class_name in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
@@ -101,7 +153,15 @@ class HBNBCommand(cmd.Cmd):
 
     
     def do_all(self, args):
-        """Prints all string representations of all instances based on the class name."""
+        """
+        Print string representations of instances based on the class name.
+
+        Args:
+            args (str): The class name and optional "count()" argument.
+
+        Usage:
+            all <class_name>
+        """
         arguments = args.split()
         if not arguments:
             print("** class name missing **")
@@ -124,27 +184,37 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_User(self, arg):
-        """List every instance or count instances of User class."""
+        """
+        List every instance or count instances of the User class.
+
+        Args:
+            arg (str): The command, can be "count()" or a class name.
+
+        Usage:
+            User <class_name> or User count()
+        """
         if arg == "count()":
             self.do_count("User")
         else:
             self.do_all("User " + arg)
 
-    def do_EOF(self, arg):
-        """Exit the program."""
-        print("")
-        return True
-
     def do_update(self, arg):
-        """Update an instance based on its ID with a
-        dictionary representation."""
+        """
+        Update an instance based on its ID with a dictionary representation.
+
+        Args:
+            arg (str): The class name, ID, attribute name, and new value.
+
+        Usage:
+            update <class_name> <ID> <attribute_name> <attribute_value>
+        """
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
             return
 
         class_name = args[0]
-        if class_name not in ("BaseModel", "Place", "Amenity", "City", "Review", "State", "User"):
+        if class_name not in self.__classes:
             print("** class doesn't exist **")
             return
 
@@ -179,18 +249,33 @@ class HBNBCommand(cmd.Cmd):
                 instance.updated_at = datetime.datetime.now()
                 storage.save()
             except ValueError:
-                raise Exception("** value must be an integer **")
+                raise Exception("** value must be of the correct data type **")
         else:
             print("** attribute doesn't exist **")
 
-
     def do_EOF(self, arg):
-        """Exit the program."""
+        """
+        Exit the program.
+
+        Args:
+            arg: Not used.
+
+        Returns:
+            bool: True to exit the program.
+        """
         print("")
         return True
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
+        """
+        Quit command to exit the program.
+
+        Args:
+            arg: Not used.
+
+        Returns:
+            bool: True to exit the program.
+        """
         return True
 
 
